@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import StyledLink from './LayoutStyled';
 
 // for styled
 //  const StyledLink = styled(NavLink)`
@@ -11,8 +12,8 @@ export const Layout = () => {
   return (
     <div>
       <nav>
-        <NavLink to="/">To Home page</NavLink>
-        <NavLink to="/movies">To movies page</NavLink>
+        <StyledLink to="/">To Home page</StyledLink>
+        <StyledLink to="/movies">To movies page</StyledLink>
       </nav>
       <main>
         <Outlet />

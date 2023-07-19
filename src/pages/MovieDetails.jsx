@@ -2,6 +2,7 @@ import { requestMovie } from 'Api/api';
 import Loader from 'components/Loader/Loader';
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
+import { MovieDetailsCompon } from 'components/movieDetailsCompon/movieDetailsCompon';
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState(null);
@@ -33,23 +34,27 @@ const MovieDetails = () => {
       {error && <>Oops... Error: {error}</>}
       {movieDetails && (
         <>
-          {/* <h2>{movieDetails.title}</h2> */}
-          <img
-            src={`https://image.tmdb.org/t/p/w200${movieDetails.poster_path}`}
-            alt={`${movieDetails.title}`}
+          <MovieDetailsCompon
+            movieDetails={movieDetails}            
           />
-          <h1>
-            {movieDetails.title} ({movieDetails.release_date.substring(0, 4)})
-          </h1>
-          <p>User score: {Math.round(movieDetails.vote_average * 10)}%</p>
-          <h3>Overview</h3>
-          <span>{movieDetails.overview}</span>
-          <h3>Genres</h3>
-          <span>
-            {movieDetails.genres.map(genre => {
-              return <p key={genre.id}>{genre.name}</p>;
-            })}
-          </span>
+          {/* <div>
+            <img
+              src={`https://image.tmdb.org/t/p/w200${movieDetails.poster_path}`}
+              alt={`${movieDetails.title}`}
+            />
+            <h1>
+              {movieDetails.title} ({movieDetails.release_date.substring(0, 4)})
+            </h1>
+            <p>User score: {Math.round(movieDetails.vote_average * 10)}%</p>
+            <h3>Overview</h3>
+            <span>{movieDetails.overview}</span>
+            <h3>Genres</h3>
+            <span>
+              {movieDetails.genres.map(genre => {
+                return <p key={genre.id}>{genre.name}</p>;
+              })}
+            </span>
+          </div> */}
         </>
       )}
       <ul>

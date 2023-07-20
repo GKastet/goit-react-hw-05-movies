@@ -1,27 +1,27 @@
 import { requestMovie } from 'Api/api';
 import Loader from 'components/Loader/Loader';
+import FormStyled from 'components/StyledPages/MoviesStyled';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
 const Movies = () => {
-  const [movieName, setMovieName] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [movieResult, setMovieResult] = useState(null);
-  
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();  
+  const queryValue = searchParams.get('query');  
+
   useEffect(() => {
-    if (!movieName) {
+    if (!queryValue) {
       return;
     }
     async function fetchMovie() {
       try {
-        setIsLoading(true);
-        const endPoint = `/search/movie?query=${movieName}`;
+        setIsLoading(true);        
+        const endPoint = `/search/movie?query=${queryValue}`;
         const responcedMovie = await requestMovie(endPoint);
         setMovieResult(responcedMovie.results);
-
-        // console.log(responcedMovie);
-        // console.log(movieName);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -29,53 +29,46 @@ const Movies = () => {
       }
     }
     fetchMovie();
-  }, [movieName]);
-  movieResult && console.log(movieResult);
-
-//   const handleOnChange = (evt)=>{
-//     return evt.target.value
-//   }
+  }, [queryValue]);  
 
   const formOnSubmit = evt => {
-    evt.prevent.default();
-    // onSubmit(pictureName);
-    
-    //setMovieName(evt.target.value)
-    //setMovieName('');
+    evt.preventDefault();
+    const searchValue = evt.target.children.search.value;    
+    setSearchParams({ query: searchValue });
   };
+  
   return (
     <>
-      <div>
+      <FormStyled>
         <form onSubmit={formOnSubmit}>
           <input
-            name="movieName"
-            value={movieName}            
+            name="search"
             type="text"
             autoComplete="on"
             autoFocus
             placeholder="Search movie..."
-            //onChange = {handleOnChange}
-            onChange={evt => setMovieName(evt.target.value)}
+            required
           />
           <button type="submit">
             <span>Search</span>
           </button>
         </form>
-        
+
         {isLoading && <Loader />}
         {error && <>Oops... Error: {error}</>}
         <ul>
           {movieResult &&
             movieResult.map(movie => (
               <li key={movie.id}>
-                <Link to={`${movie.id}`}>{movie.title}</Link>
+                <Link state={{ from: location }} to={`${movie.id}`}>
+                  {movie.title}
+                </Link>
               </li>
             ))}
         </ul>
-      </div>
+      </FormStyled>
     </>
   );
 };
 
 export default Movies;
-

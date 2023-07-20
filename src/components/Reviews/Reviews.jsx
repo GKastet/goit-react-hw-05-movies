@@ -15,8 +15,7 @@ const Reviews = () => {
         setIsLoading(true);
         const endPointReviews = `/movie/${movieId}/reviews`;
         const responcedReviews = await requestMovie(endPointReviews);
-        setMovieReviews(responcedReviews);
-        console.log(responcedReviews);
+        setMovieReviews(responcedReviews);        
       } catch (error) {
         setError(error.message);
       } finally {
@@ -28,7 +27,6 @@ const Reviews = () => {
 
   return (
     <div>
-      Reviews
       {isLoading && <Loader />}
       {error && <>Oops... Error: {error}</>}
       {responcedReviews && (
@@ -38,7 +36,7 @@ const Reviews = () => {
             {responcedReviews.results?.length <= 0 ? (
               <p>We don't have any reviews for this movie yet.</p>
             ) : (
-              responcedReviews.results.map(review => (                
+              responcedReviews.results.map(review => (
                 <li key={review.id}>
                   <h3>Author: {review.author}</h3>
                   <p>{review.content}</p>

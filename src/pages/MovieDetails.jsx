@@ -3,6 +3,7 @@ import Loader from 'components/Loader/Loader';
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { MovieDetailsCompon } from 'components/movieDetailsCompon/movieDetailsCompon';
+import UlStyled from 'components/StyledPages/MovieDetailsStyled';
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState(null);
@@ -16,8 +17,7 @@ const MovieDetails = () => {
         setIsLoading(true);
         const endPointDetails = `/movie/${movieId}`;
         const responcedDetails = await requestMovie(endPointDetails);
-        setMovieDetails(responcedDetails);
-        //console.log(responcedDetails);
+        setMovieDetails(responcedDetails);        
       } catch (error) {
         setError(error.message);
       } finally {
@@ -25,8 +25,7 @@ const MovieDetails = () => {
       }
     }
     fetchMovieDetails();
-  }, [movieId]);
-  //console.log(movieDetails);
+  }, [movieId]);  
 
   return (
     <div>
@@ -36,28 +35,11 @@ const MovieDetails = () => {
         <>
           <MovieDetailsCompon
             movieDetails={movieDetails}            
-          />
-          {/* <div>
-            <img
-              src={`https://image.tmdb.org/t/p/w200${movieDetails.poster_path}`}
-              alt={`${movieDetails.title}`}
-            />
-            <h1>
-              {movieDetails.title} ({movieDetails.release_date.substring(0, 4)})
-            </h1>
-            <p>User score: {Math.round(movieDetails.vote_average * 10)}%</p>
-            <h3>Overview</h3>
-            <span>{movieDetails.overview}</span>
-            <h3>Genres</h3>
-            <span>
-              {movieDetails.genres.map(genre => {
-                return <p key={genre.id}>{genre.name}</p>;
-              })}
-            </span>
-          </div> */}
+          />     
+      
         </>
       )}
-      <ul>
+      <UlStyled>
         Additional information
         <li>
           <Link to="cast">Cast</Link>
@@ -65,7 +47,7 @@ const MovieDetails = () => {
         <li>
           <Link to="reviews">Reviews</Link>
         </li>
-      </ul>
+      </UlStyled>
       <Outlet />
     </div>
   );

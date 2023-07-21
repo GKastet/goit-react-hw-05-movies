@@ -1,11 +1,12 @@
+import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import MovieStyled, { LinkStyled } from './movieDetailsComponStyled';
-import { useRef } from 'react';
+import PropTypes from 'prop-types';
 
 export const MovieDetailsCompon = ({ movieDetails }) => {
   const location = useLocation();  
   const backLinkRef = useRef(location.state?.from);
-
+  
   return (
     <>
       <LinkStyled to={backLinkRef.current ?? '/'}>Go back</LinkStyled>
@@ -29,3 +30,7 @@ export const MovieDetailsCompon = ({ movieDetails }) => {
   );
 };
 export default MovieDetailsCompon;
+
+MovieDetailsCompon.propTypes = {
+  movieDetails: PropTypes.object.isRequired
+}
